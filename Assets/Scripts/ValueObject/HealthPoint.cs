@@ -1,14 +1,21 @@
-﻿using System;
+using System;
 
 namespace Assets.Scripts.ValueObject
 {
     internal readonly struct HealthPoint
     {
-        public HealthPoint(int value)
+        public HealthPoint(int current, int max)
         {
-            Value = Math.Max(0, value);
+            Max = Math.Max(0, max);
+            Current = Math.Clamp(current, 0, Max);
         }
 
-        public readonly int Value;
+        public readonly int Current;
+        public readonly int Max;
+
+        public bool IsDead => Current <= 0;
+
+        public HealthPoint Damage(Damage damage) => new(Current - damage.Value, Max);
+        public HealthPoint Heal(int amount) => new(Current + amount, Max);
     }
 }

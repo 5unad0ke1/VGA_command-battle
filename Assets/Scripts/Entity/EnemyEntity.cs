@@ -1,21 +1,19 @@
-﻿using Assets.Scripts.ValueObject;
+using Assets.Scripts.ValueObject;
 
 namespace Assets.Scripts.Entity
 {
-    internal class EnemyEntity : IDamageable
+    internal sealed class EnemyEntity : Combatant
     {
-        public EnemyEntity(HealthPoint hp, AttackPoint atk)
+        public EnemyEntity(HealthPoint hp, AttackPoint atk) : base(hp)
         {
-            _hp = hp;
             _atk = atk;
         }
-        public void AddDamage(Damage damage)
+
+        private readonly AttackPoint _atk;
+
+        public void Attack(IDamageable target)
         {
-            _hp = new(_hp.Value - damage.Value);
+            target.AddDamage(new Damage(_atk.Value), this);
         }
-
-        private HealthPoint _hp;
-        private AttackPoint _atk;
-
     }
 }
