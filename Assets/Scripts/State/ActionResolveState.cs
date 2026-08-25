@@ -3,8 +3,11 @@ using Assets.Scripts.Entity;
 
 namespace Assets.Scripts.State
 {
-    // PDFの「行動選択の結果」フェーズ。渡されたコマンドを1つ実行し、
-    // 勝敗判定のうえで指定された次状態(敵ターン or プレイヤーターン)へ遷移する。
+    /// <summary>
+    /// 仕様書(PDF)の「行動選択の結果」フェーズ。<see cref="Begin"/> で渡されたコマンドを
+    /// 1 つ実行し、勝敗判定のうえで指定された次状態(敵ターン or プレイヤーターン)へ遷移する。
+    /// インスタンスは使い回されるため、遷移のたびに <see cref="Begin"/> が要る。
+    /// </summary>
     internal sealed class ActionResolveState : IState
     {
         public ActionResolveState(IStateController controller, PlayerEntity player, EnemyEntity enemy, BattleEndState battleEndState)
@@ -15,6 +18,10 @@ namespace Assets.Scripts.State
             _battleEndState = battleEndState;
         }
 
+        /// <summary>
+        /// 実行するコマンドと、解決後に遷移する State を設定する。
+        /// この State へ遷移する直前に必ず呼ぶこと。
+        /// </summary>
         public void Begin(IBattleCommand command, IState nextState)
         {
             _command = command;
@@ -23,12 +30,14 @@ namespace Assets.Scripts.State
 
         public void Init()
         {
+            // コマンドの実行は入場時の 1 回だけ。持ち越さないよう参照はここで手放す。
             _command.Execute();
             _command = null;
         }
 
         public void Update()
         {
+            // 遷移を Update() で行うことで、実行結果が表示に反映されてから次状態へ進む。
             if (_player.IsDead || _enemy.IsDead)
             {
                 _battleEndState.Setup(_player.IsDead);

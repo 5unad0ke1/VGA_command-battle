@@ -9,6 +9,11 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
+    /// <summary>
+    /// バトル一式の合成ルート兼 State マシンのホスト。
+    /// Entity・Command・State の生成と配線をここに集約し、以降は現在の State を毎フレーム駆動するだけ。
+    /// MonoBehaviour への依存をこのクラスに閉じ込め、下位のレイヤーは素の C# に保つ。
+    /// </summary>
     public sealed class InGameManager : MonoBehaviour, IStateController
     {
         [Header("Command Buttons")]
@@ -37,6 +42,7 @@ namespace Assets.Scripts
         [Header("Status GUI")]
         [SerializeField] private BattleStatusView StatusView;
 
+        /// <summary>インスペクタでどうぐを設定するための入れ物。実行時は <see cref="ItemData"/> に変換する。</summary>
         [Serializable]
         private struct ItemConfig
         {
@@ -57,6 +63,7 @@ namespace Assets.Scripts
                 new HealthPoint(EnemyMaxHp, EnemyMaxHp),
                 new AttackPoint(EnemyAttack));
 
+            // 依存の少ない State から順に生成する。
             var battleEndState = new BattleEndState();
             var actionResolveState = new ActionResolveState(this, player, enemy, battleEndState);
             var enemyActionState = new EnemyActionState(this, enemy, player, actionResolveState);
@@ -72,6 +79,7 @@ namespace Assets.Scripts
                 actionResolveState,
                 enemyActionState);
 
+            // PlayerCommandState とは相互参照になるため、コンストラクタでは渡せない分をここで配線する。
             enemyActionState.Configure(playerCommandState);
             itemSelectState.Configure(playerCommandState, enemyActionState);
 
@@ -90,6 +98,8 @@ namespace Assets.Scripts
 
         public void ChangeState(IState next)
         {
+            // Init() の中からさらに ChangeState() が呼ばれても取り違えないよう、
+            // 現在の State を差し替えてから Init() する。
             _currentState?.Exit();
             _currentState = next;
             _currentState.Init();

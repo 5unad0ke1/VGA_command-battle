@@ -3,6 +3,10 @@ using Assets.Scripts.Entity;
 
 namespace Assets.Scripts.State
 {
+    /// <summary>
+    /// 敵のターン。入場と同時に敵の行動を 1 つ組み立てて解決フェーズへ渡すため、
+    /// この State に滞在するフレームは無い(<see cref="Update"/> は呼ばれない)。
+    /// </summary>
     internal sealed class EnemyActionState : IState
     {
         public EnemyActionState(IStateController controller, EnemyEntity enemy, PlayerEntity target, ActionResolveState actionResolveState)
@@ -13,7 +17,10 @@ namespace Assets.Scripts.State
             _actionResolveState = actionResolveState;
         }
 
-        // PlayerCommandStateと相互参照になるため、生成後に配線する。
+        /// <summary>
+        /// 解決後の遷移先を配線する。<see cref="PlayerCommandState"/> と相互参照になり
+        /// コンストラクタでは解決できないため、生成後に呼ぶ。
+        /// </summary>
         public void Configure(PlayerCommandState playerCommandState)
         {
             _playerCommandState = playerCommandState;
@@ -21,6 +28,7 @@ namespace Assets.Scripts.State
 
         public void Init()
         {
+            // 敵の行動は現状こうげき固定。行動の選択肢が増えたらここに分岐を置く。
             var command = new EnemyAttackCommand(_enemy, _target);
             _actionResolveState.Begin(command, _playerCommandState);
             _controller.ChangeState(_actionResolveState);

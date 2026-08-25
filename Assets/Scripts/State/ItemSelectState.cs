@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.State
 {
-    // 「どうぐ」コマンド選択時のサブ状態。「やめる」でコマンド選択に戻る。
+    /// <summary>
+    /// 「どうぐ」コマンド選択時のサブ状態。アイテムを選ぶと解決フェーズへ進み、
+    /// 「やめる」でコマンド選択へ戻る。
+    /// </summary>
     internal sealed class ItemSelectState : IState
     {
         public ItemSelectState(
@@ -21,6 +24,8 @@ namespace Assets.Scripts.State
             _itemButtons = itemButtons;
             _actionResolveState = actionResolveState;
 
+            // 購読は生成時に 1 度だけ。クリックはフィールドに記録するに留め、
+            // 実際の遷移は Update() で行う(コールバック内から状態を変えない)。
             for (var i = 0; i < itemButtons.Count; i++)
             {
                 var index = i;
@@ -30,13 +35,17 @@ namespace Assets.Scripts.State
             cancelButton.onClick.AddListener(() => _cancelled = true);
         }
 
-        // PlayerCommandStateと相互参照になるため、生成後に配線する。
+        /// <summary>
+        /// 遷移先を配線する。<see cref="PlayerCommandState"/> と相互参照になり
+        /// コンストラクタでは解決できないため、生成後に呼ぶ。
+        /// </summary>
         public void Configure(PlayerCommandState playerCommandState, EnemyActionState enemyActionState)
         {
             _playerCommandState = playerCommandState;
             _enemyActionState = enemyActionState;
         }
 
+        /// <summary>どうぐを使う対象を設定する。この State へ遷移する直前に必ず呼ぶこと。</summary>
         public void Begin(PlayerEntity player)
         {
             _player = player;
@@ -45,6 +54,8 @@ namespace Assets.Scripts.State
         public void Init()
         {
             _parent.SetActive(true);
+
+            // 前回の選択が残っていると即座に確定してしまうため、入場のたびに初期化する。
             _chosenIndex = -1;
             _cancelled = false;
             RefreshButtons();
@@ -61,6 +72,7 @@ namespace Assets.Scripts.State
             if (_chosenIndex < 0)
                 return;
 
+            // どうぐの使用者と対象は現状どちらもプレイヤー自身。
             var command = new ItemCommand(_player, _chosenIndex, _player);
             _actionResolveState.Begin(command, _enemyActionState);
             _controller.ChangeState(_actionResolveState);
@@ -71,6 +83,7 @@ namespace Assets.Scripts.State
             _parent.SetActive(false);
         }
 
+        // TODO: ItemData.Name をボタンのラベルに反映する。現状は所持数に応じた表示/非表示のみ。
         private void RefreshButtons()
         {
             var items = _player.Inventory.Items;

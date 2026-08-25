@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    // ドメイン層(Entity)の値を読み取って表示するだけのView。逆方向の依存は持たせない。
+    /// <summary>
+    /// ドメイン層(Entity)の値を読み取って表示するだけの View。逆方向の依存は持たせない。
+    /// </summary>
     internal sealed class BattleStatusView : MonoBehaviour
     {
         [Header("Player HP")]
@@ -19,6 +21,10 @@ namespace Assets.Scripts.UI
         [SerializeField] private Slider EnemyHpSlider;
         [SerializeField] private Text EnemyHpText;
 
+        /// <summary>
+        /// 現在値でゲージを更新する。毎フレーム呼ばれる前提のポーリング方式なので、
+        /// 重い処理や毎回の生成はここに置かない。
+        /// </summary>
         public void Refresh(PlayerEntity player, EnemyEntity enemy)
         {
             SetGauge(PlayerHpSlider, PlayerHpText, player.Hp.Current, player.Hp.Max);
@@ -26,6 +32,7 @@ namespace Assets.Scripts.UI
             SetGauge(EnemyHpSlider, EnemyHpText, enemy.Hp.Current, enemy.Hp.Max);
         }
 
+        // 参照が未設定でも動くよう、null は黙って読み飛ばす。
         private static void SetGauge(Slider slider, Text text, int current, int max)
         {
             if (slider != null)
