@@ -3,7 +3,7 @@ using Assets.Scripts.ValueObject;
 namespace Assets.Scripts.Entity
 {
     /// <summary>HP の保持と被ダメージ処理を共通化した戦闘者の基底。</summary>
-    internal abstract class Combatant : IDamageable
+    public abstract class Combatant : IDamageable
     {
         protected Combatant(HealthPoint hp)
         {

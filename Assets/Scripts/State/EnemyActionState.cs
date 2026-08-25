@@ -7,7 +7,7 @@ namespace Assets.Scripts.State
     /// 敵のターン。入場と同時に敵の行動を 1 つ組み立てて解決フェーズへ渡すため、
     /// この State に滞在するフレームは無い(<see cref="Update"/> は呼ばれない)。
     /// </summary>
-    internal sealed class EnemyActionState : IState
+    public sealed class EnemyActionState : IState
     {
         public EnemyActionState(IStateController controller, EnemyEntity enemy, PlayerEntity target, ActionResolveState actionResolveState)
         {

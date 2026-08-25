@@ -8,7 +8,7 @@ namespace Assets.Scripts.Entity
     /// プレイヤーの所持品。<see cref="Capacity"/> 個までを保持し、使用した分は取り除かれる
     /// (個数の概念は持たず、1 要素 = 1 個)。
     /// </summary>
-    internal sealed class Inventory
+    public sealed class Inventory
     {
         private const int Capacity = 5;
 

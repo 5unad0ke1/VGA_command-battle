@@ -8,7 +8,7 @@ namespace Assets.Scripts.State
     /// 1 つ実行し、勝敗判定のうえで指定された次状態(敵ターン or プレイヤーターン)へ遷移する。
     /// インスタンスは使い回されるため、遷移のたびに <see cref="Begin"/> が要る。
     /// </summary>
-    internal sealed class ActionResolveState : IState
+    public sealed class ActionResolveState : IState
     {
         public ActionResolveState(IStateController controller, PlayerEntity player, EnemyEntity enemy, BattleEndState battleEndState)
         {

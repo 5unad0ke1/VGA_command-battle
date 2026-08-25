@@ -7,7 +7,7 @@ namespace Assets.Scripts.Entity
     /// 判定は残り回数のあるあいだ被弾ごとに行い、成否にかかわらず回数を 1 消費する
     /// (= 「3 回のこうげきに対して、それぞれ 80% ではねかえす」であり、3 回はねかえす保証ではない)。
     /// </summary>
-    internal sealed class ReflectState
+    public sealed class ReflectState
     {
         public ReflectState(int remainingCount, float chance)
         {

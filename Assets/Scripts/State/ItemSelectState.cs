@@ -10,7 +10,7 @@ namespace Assets.Scripts.State
     /// 「どうぐ」コマンド選択時のサブ状態。アイテムを選ぶと解決フェーズへ進み、
     /// 「やめる」でコマンド選択へ戻る。
     /// </summary>
-    internal sealed class ItemSelectState : IState
+    public sealed class ItemSelectState : IState
     {
         public ItemSelectState(
             GameObject parent,

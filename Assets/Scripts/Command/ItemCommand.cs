@@ -6,7 +6,7 @@ namespace Assets.Scripts.Command
     /// プレイヤーのどうぐ使用。インデックスが所持品の範囲外なら不発になるが、
     /// 現状は戻り値を見ていないためターンだけが消費される。
     /// </summary>
-    internal sealed class ItemCommand : IBattleCommand
+    public sealed class ItemCommand : IBattleCommand
     {
         public ItemCommand(PlayerEntity actor, int itemIndex, PlayerEntity target)
         {

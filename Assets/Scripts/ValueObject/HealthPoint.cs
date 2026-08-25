@@ -6,7 +6,7 @@ namespace Assets.Scripts.ValueObject
     /// HP。常に 0〜Max に丸められる不変値で、増減は新しいインスタンスを返す
     /// (「範囲外の HP」を型として作れないようにするのが狙い)。
     /// </summary>
-    internal readonly struct HealthPoint
+    public readonly struct HealthPoint
     {
         public HealthPoint(int current, int max)
         {

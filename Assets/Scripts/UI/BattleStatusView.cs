@@ -7,7 +7,7 @@ namespace Assets.Scripts.UI
     /// <summary>
     /// ドメイン層(Entity)の値を読み取って表示するだけの View。逆方向の依存は持たせない。
     /// </summary>
-    internal sealed class BattleStatusView : MonoBehaviour
+    public sealed class BattleStatusView : MonoBehaviour
     {
         [Header("Player HP")]
         [SerializeField] private Slider PlayerHpSlider;

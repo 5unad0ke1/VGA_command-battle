@@ -3,7 +3,7 @@ using Assets.Scripts.ValueObject;
 namespace Assets.Scripts.Entity
 {
     /// <summary>プレイヤー。HP に加えて SP・所持品・はねかえし効果を持つ。</summary>
-    internal sealed class PlayerEntity : Combatant
+    public sealed class PlayerEntity : Combatant
     {
         public PlayerEntity(
             HealthPoint hp,

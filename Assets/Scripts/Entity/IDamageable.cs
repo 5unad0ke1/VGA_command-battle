@@ -6,7 +6,7 @@ namespace Assets.Scripts.Entity
     /// ダメージを受けられる対象。はねかえしで攻撃元へダメージを返す必要があるため、
     /// 攻撃側も同じ抽象で受け渡しする。
     /// </summary>
-    internal interface IDamageable
+    public interface IDamageable
     {
         public bool IsDead { get; }
 

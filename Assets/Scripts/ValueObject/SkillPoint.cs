@@ -3,7 +3,7 @@ using System;
 namespace Assets.Scripts.ValueObject
 {
     /// <summary>スキルの使用回数。常に 0〜Max に丸められる不変値。</summary>
-    internal readonly struct SkillPoint
+    public readonly struct SkillPoint
     {
         public SkillPoint(int current, int max)
         {

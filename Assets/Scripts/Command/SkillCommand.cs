@@ -6,7 +6,7 @@ namespace Assets.Scripts.Command
     /// プレイヤーのスキルこうげき。SP が無い場合は不発になるが、
     /// 現状は戻り値を見ていないためターンだけが消費される。
     /// </summary>
-    internal sealed class SkillCommand : IBattleCommand
+    public sealed class SkillCommand : IBattleCommand
     {
         public SkillCommand(PlayerEntity actor, IDamageable target)
         {

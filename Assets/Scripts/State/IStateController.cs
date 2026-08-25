@@ -1,7 +1,7 @@
 ﻿namespace Assets.Scripts.State
 {
     /// <summary>State から次の State への遷移を要求するための窓口。</summary>
-    internal interface IStateController
+    public interface IStateController
     {
         /// <summary>
         /// 現在の State を <paramref name="next"/> に切り替える。

@@ -8,7 +8,7 @@ namespace Assets.Scripts.State
     /// プレイヤーのコマンド選択待ち。ボタン入力を <see cref="IBattleCommand"/> に変換して
     /// 解決フェーズへ渡す。「どうぐ」だけはサブ状態へ遷移する。
     /// </summary>
-    internal sealed class PlayerCommandState : IState
+    public sealed class PlayerCommandState : IState
     {
         public PlayerCommandState(
             IStateController controller,
